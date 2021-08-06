@@ -1,3 +1,3 @@
-Свайп слайдер (десктоп і мобільний) + автоскрол, кнопки навігації та стрілки
+Фото на десктопі, свайп-слайдер на мобільному: автоскрол, кнопки навігації та стрілки
 
-https://lvivduncan.github.io/levus-swipe-slider/
+https://lvivduncan.github.io/levus-swipe-slider-upgrade/
