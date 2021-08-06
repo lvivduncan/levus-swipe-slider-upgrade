@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+
+*,::after,::before
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* for test */
+.wrapper
+{
+    width: 1200px;
+    margin: 100px auto;
+}
+
+@media(max-width:1250px)
+{
+    .wrapper
+    {
+        width:95%;
+    }
+}
+/* for test */
+
+
+
+.levus-swipe-slider .slides
+{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+@media(max-width:776px)
+{
+    
+    .levus-swipe-slider
+    {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .levus-swipe-slider .slides
+    {
+        display: grid;
+        grid-template-columns: repeat(20,100%);
+        position: relative;
+    }
+
+    .levus-swipe-slider .slides .slide
+    {
+        height: 100%;
+        cursor: grab;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        /* for test */
+        font-size: 22px;
+        /* for test */
+    }
+
+    /* nav */
+    .slide-left,
+    .slide-right
+    {
+        position: absolute;
+        top: calc(50% - 20px); 
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        transition: .5s;
+    }
+
+    .slide-left
+    {
+        left: 20px;
+        transform: translateX(-60px);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000000' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
+    }
+
+    .slide-right
+    {
+        right: 20px;
+        transform: translateX(60px);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000000' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    }
+
+    /* show arrows */
+    .levus-swipe-slider:hover .slide-left
+    {
+        transform: translateX(0);
+    }
+
+    .levus-swipe-slider:hover .slide-right
+    {
+        transform: translateX(0);
+    }
+
+    /* move left */
+    .to-left
+    {
+        transform: translateX(100%);
+    }
+
+    /* move right */
+    .to-right
+    {
+        transform: translateX(-100%);
+    }
+
+    /* small buttons */
+    .levus-nav
+    {
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        text-align: center;
+    }
+
+    .levus-nav span
+    {
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        border-radius: 10px;
+        display: inline-block;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+
+    .levus-nav span.active
+    {
+        background: #000;
+    }
+
+}
+
+
+/* for test */
+.slide-wrap
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+}
+
+.slide-wrap p
+{
+    margin: 20px 0;
+    padding: 0 100px;
+    line-height: 1.5;
+}
+
+.levus-swipe-slider img
+{
+    max-width:100%!important;
+    height: auto;
+    vertical-align: middle;
+}
+
+
+/* if you want 16:9 */
+.slides .picture
+{
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%;
+}
+
+.slides .picture picture
+{
+    display: block;
+    width: 100%;
+    max-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.slides picture img, 
+.slides picture source
+{
+    width: 100%;
+    height: auto;
+}
+
+/* for test */
