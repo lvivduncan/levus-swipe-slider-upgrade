@@ -1,13 +1,59 @@
 // 6-08-2021 new upgrade
 {
-    // TODO: >776
+
+    
+    
+    // flag resize
+    let resize = false;
+
+    window.addEventListener('resize', () => {
+
+        if(window.innerWidth < 776){
+
+            if(resize == false){
+
+                resize = true;
+                console.log(resize)
+
+                slider(disabled = false);
+
+            }
+
+        } else if(window.innerWidth >= 776) {
+
+            resize = false;
+            slider(disabled = true);
+            console.log(resize)
+
+        }        
+
+    });
 
     if(window.innerWidth < 776){
+
+        if(resize == false){
+
+            resize = true;
+            slider(disabled = false);
+
+            console.log(resize)
+        }
+
+    } else if(window.innerWidth >= 776) {
+
+        resize = false;
+        slider(disabled = true);
+        console.log(resize)
+    }
+
+
+    function slider(disabled = false){
 
         // basic wrapper
         const levusSwipeSlider = document.querySelectorAll('.levus-swipe-slider');
 
-        // TODO: foreach levusSwipeSlider (nodelist)
+        if(disabled === false){}
+
         levusSwipeSlider.forEach(element => {
 
             // box with slides
@@ -255,8 +301,9 @@
                 buttons[flag].classList.add('active');
             }
 
-        });        
+        });   
 
     }
+
 
 }
