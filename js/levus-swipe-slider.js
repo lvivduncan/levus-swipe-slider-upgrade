@@ -1,8 +1,8 @@
 // 6-08-2021 new upgrade
 {
 
-    
-    
+    // TODO: disable autoscroll() and click-tuch
+    /* 
     // flag resize
     let resize = false;
 
@@ -13,28 +13,30 @@
             if(resize == false){
 
                 resize = true;
+
                 console.log(resize)
 
-                slider(disabled = false);
+                slider();
 
             }
 
         } else if(window.innerWidth >= 776) {
 
             resize = false;
-            slider(disabled = true);
+
             console.log(resize)
 
         }        
 
-    });
+    }); */
 
-    if(window.innerWidth < 776){
+/*     if(window.innerWidth < 776){
 
         if(resize == false){
 
             resize = true;
-            slider(disabled = false);
+
+            slider();
 
             console.log(resize)
         }
@@ -42,17 +44,20 @@
     } else if(window.innerWidth >= 776) {
 
         resize = false;
-        slider(disabled = true);
+
         console.log(resize)
-    }
+    } */
 
 
-    function slider(disabled = false){
+    // function slider(){
+
+
+
+
+
 
         // basic wrapper
         const levusSwipeSlider = document.querySelectorAll('.levus-swipe-slider');
-
-        if(disabled === false){}
 
         levusSwipeSlider.forEach(element => {
 
@@ -84,78 +89,91 @@
 
             if(length > 1) {
                 
-                // add buttons
-                element.append(left, right, nav);
 
-                for (let index = 0; index < length; index++) {
+                if(window.innerWidth < 776){
 
-                    // nav buttons
-                    const span = document.createElement('span');
-                    span.setAttribute('data-id', index);
-                    
-                    // clone slides
-                    slides.append(list[index].cloneNode(true));
 
                     // add buttons
-                    nav.append(span);
-                    
+                    element.append(left, right, nav);
+
+                    for (let index = 0; index < length; index++) {
+
+                        // nav buttons
+                        const span = document.createElement('span');
+                        span.setAttribute('data-id', index);
+                        
+                        // clone slides
+                        slides.append(list[index].cloneNode(true));
+
+                        // add buttons
+                        nav.append(span);
+                        
+                    }
+
+                    // shift -100%
+                    slides.style.left = '-100%';
+
+                    // buttons = document.querySelectorAll('.levus-nav span');
+                    buttons = element.querySelectorAll('.levus-nav span');
+
+                    buttons.forEach(item => {
+                
+                        // lighting 2 slide 
+                        buttons[1].classList.add('active');
+                
+                        item.addEventListener('click', function() {
+                            const id = this.dataset.id;
+                
+                            buttons.forEach(item => item.classList.remove('active'));
+                            this.classList.add('active');
+                
+                            if(flag > id){ // клікнуто зліва від активної кнопки
+                
+                                const length = flag - id;
+                
+                                for(let i = 0; i < length; i++){
+                                    
+                                    leftScroll();
+                                }
+                            } 
+                            
+                            if(flag < id){ // клікнуто справа від активної кнопки
+                
+                                const length = id - flag;
+                
+                                for(let i = 0; i < length; i++){
+                                    
+                                    rightScroll();
+                                }
+                            }
+                
+                            flag = id;
+                        });
+                    });
+
+                    // auto-scroll if the length is more than 1 element
+                    autoScroll();
+
                 }
 
-                // shift -100%
-                slides.style.left = '-100%';
-
-                // buttons = document.querySelectorAll('.levus-nav span');
-                buttons = element.querySelectorAll('.levus-nav span');
-
-                buttons.forEach(item => {
-            
-                    // lighting 2 slide 
-                    buttons[1].classList.add('active');
-            
-                    item.addEventListener('click', function() {
-                        const id = this.dataset.id;
-            
-                        buttons.forEach(item => item.classList.remove('active'));
-                        this.classList.add('active');
-            
-                        if(flag > id){ // клікнуто зліва від активної кнопки
-            
-                            const length = flag - id;
-            
-                            for(let i = 0; i < length; i++){
-                                
-                                leftScroll();
-                            }
-                        } 
-                        
-                        if(flag < id){ // клікнуто справа від активної кнопки
-            
-                            const length = id - flag;
-            
-                            for(let i = 0; i < length; i++){
-                                
-                                rightScroll();
-                            }
-                        }
-            
-                        flag = id;
-                    });
-                });
-
-                // auto-scroll if the length is more than 1 element
-                autoScroll();
 
             }
 
-            /**
-             * click
-             */
+            
+            // if(window.innerWidth < 776){
+                
+                /**
+                 * click
+                 */
 
-            // left click
-            left && left.addEventListener('click', leftScroll);
+                // left click
+                left && left.addEventListener('click', leftScroll);
 
-            // right click
-            right && right.addEventListener('click', rightScroll);
+                // right click
+                right && right.addEventListener('click', rightScroll);        
+            // }
+
+
 
             /**
              * swipe
@@ -168,142 +186,255 @@
             list = element.querySelectorAll('.slide');
 
             if(list.length > 1){    
-                list.forEach(item => {
-                
-                    // touch
-                    item.addEventListener('touchstart', e => touchStart(e), false);
-                    item.addEventListener('touchmove', e => touchMove(e), false);
-                    item.addEventListener('touchend', touchEnd, false);
 
-                    // click
-                    item.addEventListener('mousedown', e => touchStart(e), false);
-                    item.addEventListener('mousemove', e => touchMove(e), false);
-                    item.addEventListener('mouseup', touchEnd, false);
+                // if(window.innerWidth < 776){
 
-                    // image preventDefault
-                    item.querySelectorAll('img').forEach(image => {
-                        image.addEventListener('dragstart', e => e.preventDefault());
+                    list.forEach(item => {
+                    
+                        // touch
+                        item.addEventListener('touchstart', e => touchStart(e), false);
+                        item.addEventListener('touchmove', e => touchMove(e), false);
+                        item.addEventListener('touchend', touchEnd, false);
+
+                        // click
+                        item.addEventListener('mousedown', e => touchStart(e), false);
+                        item.addEventListener('mousemove', e => touchMove(e), false);
+                        item.addEventListener('mouseup', touchEnd, false);
+
+                        // image preventDefault
+                        item.querySelectorAll('img').forEach(image => {
+                            image.addEventListener('dragstart', e => e.preventDefault());
+                        });
+
                     });
+            
+                // }
 
-                });
             }
 
             function touchStart(e){
 
-                // mobile/deskop check
-                if(e.type.includes('mouse')){
-                    startX = e.pageX;
-                } else {
-                    startX = e.targetTouches[0].clientX;
-                }
+                // виконуємо тільки на малому екрані
+                // window.addEventListener('resize', () => {
+
+                    if(window.innerWidth < 776){
+
+                        // mobile/deskop check
+                        if(e.type.includes('mouse')){
+                            startX = e.pageX;
+                        } else {
+                            startX = e.targetTouches[0].clientX;
+                        }                        
+
+                    }      
+
+                // });
+
+
+
                 
             }
 
             function touchMove(e){
-                if(!startX) return false;
 
-                // mobile/deskop check
-                if(e.type.includes('mouse')){
-                    moveX = e.pageX;
-                } else {
-                    moveX = e.targetTouches[0].clientX;
-                }
+                // виконуємо тільки на малому екрані
+                // window.addEventListener('resize', () => {
 
-                resultX = moveX - startX;
+                    if(window.innerWidth < 776){
+
+                        if(!startX) return false;
+
+                        // mobile/deskop check
+                        if(e.type.includes('mouse')){
+                            moveX = e.pageX;
+                        } else {
+                            moveX = e.targetTouches[0].clientX;
+                        }
+
+                        resultX = moveX - startX;                        
+
+                    }      
+
+                // });
+
+
             }
 
             function touchEnd(){
-                if(resultX > 0) leftScroll();
-                else rightScroll();
+
+                // виконуємо тільки на малому екрані
+                // window.addEventListener('resize', () => {
+
+                    if(window.innerWidth < 776){
+
+                        if(resultX > 0) leftScroll();
+                        else rightScroll();                        
+
+                    }      
+
+                // });
+
+
             }
 
             // autoscroll 
             // TODO: hover stop
             function autoScroll(){
 
-                setInterval(() => {
 
-                    // нарощуємо на 1
-                    if(flag === length - 1){
-                        flag = 0;
-                    } else {
-                        flag++;
+
+/*                 if(window.innerWidth < 776){
+
+                    if(resize == false){
+            
+                        resize = true;
+            
+                        slider();
+            
+                        console.log(resize)
                     }
+            
+                } */
+/* 
+                // виконуємо тільки на малому екрані
+                window.addEventListener('resize', () => {
 
-                    const first = slides.firstElementChild;
-                    slides.append(first);
+                    if(window.innerWidth < 776){
+            
+                        
+            
+                    }      
+            
+                }); */
 
-                    slides.style.transition = 'none';
-                    slides.classList.add('to-left');
-                    
-                    setTimeout(() => {
-                        slides.classList.remove('to-left');
-                        slides.style.transition = '.5s';
-                    }, 0);
 
-                    buttonLight();
+                // виконуємо тільки на малому екрані
+                // window.addEventListener('resize', () => {
 
-                }, 4000);
+                    if(window.innerWidth < 776){
+            
+                        setInterval(() => {
+
+                            // нарощуємо на 1
+                            if(flag === length - 1){
+                                flag = 0;
+                            } else {
+                                flag++;
+                            }
+
+                            const first = slides.firstElementChild;
+                            slides.append(first);
+
+                            slides.style.transition = 'none';
+                            slides.classList.add('to-left');
+                            
+                            setTimeout(() => {
+                                slides.classList.remove('to-left');
+                                slides.style.transition = '.5s';
+                            }, 0);
+
+                            buttonLight();
+
+                        }, 4000);
+            
+                    }      
+            
+                // });
+
+
+
+
+
 
             }
 
             function leftScroll(){
 
-                // якщо не менше кількості слайдів, то віднімаємо 1
-                if(flag === 0){
-                    flag = length - 1;
-                } else {
-                    flag--;
-                }
 
-                const last = slides.lastElementChild;
-                slides.prepend(last);
+                // виконуємо тільки на малому екрані
+                // window.addEventListener('resize', () => {
 
-                slides.style.transition = 'none';
-                slides.classList.add('to-right');
+                    if(window.innerWidth < 776){
 
-                setTimeout(() => {
-                    slides.classList.remove('to-right');
-                    slides.style.transition = '.5s';
-                }, 0);
+                        // якщо не менше кількості слайдів, то віднімаємо 1
+                        if(flag === 0){
+                            flag = length - 1;
+                        } else {
+                            flag--;
+                        }
 
-                buttonLight();
+                        const last = slides.lastElementChild;
+                        slides.prepend(last);
+
+                        slides.style.transition = 'none';
+                        slides.classList.add('to-right');
+
+                        setTimeout(() => {
+                            slides.classList.remove('to-right');
+                            slides.style.transition = '.5s';
+                        }, 0);
+
+                        buttonLight();                        
+
+                    }      
+
+                // });
+
+
+
 
             }
 
             function rightScroll(){
 
-                // нарощуємо на 1
-                if(flag === length - 1){
-                    flag = 0;
-                } else {
-                    flag++;
-                }
+                // виконуємо тільки на малому екрані
+                // window.addEventListener('resize', () => {
 
-                const first = slides.firstElementChild;
-                slides.append(first);
+                    if(window.innerWidth < 776){
 
-                slides.style.transition = 'none';
-                slides.classList.add('to-left');
-                
-                setTimeout(() => {
-                    slides.classList.remove('to-left');
-                    slides.style.transition = '.5s';
-                }, 0);
+                        // нарощуємо на 1
+                        if(flag === length - 1){
+                            flag = 0;
+                        } else {
+                            flag++;
+                        }
 
-                buttonLight();
+                        const first = slides.firstElementChild;
+                        slides.append(first);
+
+                        slides.style.transition = 'none';
+                        slides.classList.add('to-left');
+                        
+                        setTimeout(() => {
+                            slides.classList.remove('to-left');
+                            slides.style.transition = '.5s';
+                        }, 0);
+
+                        buttonLight();                        
+
+                    }      
+
+                // });
+
+
+
 
             }
 
             // buttons highlights
             function buttonLight(){
-                buttons.forEach(item => item.classList.remove('active'));
-                buttons[flag].classList.add('active');
+
+                if(window.innerWidth < 776){
+
+                    buttons.forEach(item => item.classList.remove('active'));
+                    buttons[flag].classList.add('active');
+
+                }
             }
 
         });   
 
-    }
+    // }
 
 
 }

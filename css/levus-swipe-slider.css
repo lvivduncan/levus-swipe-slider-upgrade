@@ -26,13 +26,16 @@
 /* for test */
 
 
+/* TODO: disabled */
+/* .levus-swipe-slider.disabled{} */
 
 .levus-swipe-slider .slides
 {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: 1fr;
 }
 
+/* slider only mobile devices */
 @media(max-width:776px)
 {
     
