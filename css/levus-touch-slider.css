@@ -35,7 +35,7 @@
     display: block;
     overflow: hidden;
     transform: translateX(0);
-    transition: 0.5s;
+    transition: 1.5s;
 }
 
 .levus-touch-slider .slide
@@ -67,6 +67,16 @@
 {
     .levus-touch-slider .slide.grabbing img
     {
-        transform: scale(0.9);
+        transform: scale(0.99);
     }
+}
+
+.scroll-left
+{
+    transform: translateX(-100%);
+}
+
+.scroll-right
+{
+    transform: translateX(100%);
 }

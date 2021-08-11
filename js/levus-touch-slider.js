@@ -50,6 +50,12 @@ let start = 0;
 // фінішна (кінець перетягування)
 let finish = 0;
 
+// останній елемент
+let last = null;
+
+// перший елемент
+let first = null;
+
 // слайдер тільки у тому випадку, якщо слайди не налл (тільки на мобільному)
 if(slides !== null){
 
@@ -62,7 +68,7 @@ if(slides !== null){
                             width: ${width}%; 
                             cursor: grab; 
                             position: relative;
-                            margin-left: -100%`;
+                            left: -100%`;
 
     slides.forEach(slide => {
         
@@ -72,7 +78,7 @@ if(slides !== null){
         slide.addEventListener('pointerdown', scrollStart);
         slide.addEventListener('pointermove', scrollMove);
         slide.addEventListener('pointerup', scrollEnd);
-        slide.addEventListener('pointerleave', scrollEnd);
+        // slide.addEventListener('pointerleave', scrollEnd);
 
     });
 }
@@ -111,21 +117,41 @@ function scrollMove(event){
 
 function scrollEnd(){
 
-    drag = false;
+    // якщо тягнемо вправо (негатив) -- скролимо
+    if(finish - start < 0){ 
+
+        last = slider.lastElementChild;
+        slider.prepend(last);
+
+        slider.classList.add('scroll-left');
+
+        setTimeout(() => {
+
+            slider.classList.remove('scroll-left');
+            slider.style.transform = 'translateX(0)';
+
+        }, 120);
+
+    }
 
     // якщо тягнемо вліво (позитив) -- скролимо
     if(finish - start > 0){
 
-        // console.log('finish - start > 5')
+        first = slider.firstElementChild;
+        slider.append(first);
+
+        slider.classList.add('scroll-right');
+
+        setTimeout(() => {
+
+            slider.classList.remove('scroll-right');
+            slider.style.transform = 'translateX(0)';
+            
+        }, 120);
 
     }
 
-    // якщо тягнемо вправо (негатив) -- скролимо
-    if(finish - start < 0){ 
+    drag = false;
 
-        // console.log('finish - start < 5')
-
-    }
-
-    this.classList.remove('grabbing', drag);
+    this.classList.remove('grabbing');
 }
