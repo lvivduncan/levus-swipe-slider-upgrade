@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+
+*,::after,::before
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* for test */
+.wrapper
+{
+    width: 1200px;
+    margin: 100px auto;
+}
+
+@media(max-width:1250px)
+{
+    .wrapper
+    {
+        width:95%;
+    }
+}
+/* for test */
+
+.levus-touch-slider
+{
+    overflow: hidden;
+}
+
+.levus-touch-slider .slides
+{
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    width: calc(7 * 100%);
+
+    overflow: hidden;
+    /* transform: translateX(0);
+    transition: transform 0.3s ease-out; */
+    cursor: grab;
+
+    transform: translateX(0);
+    transition: 0.5s;
+}
+
+.levus-touch-slider .slide
+{
+    width: 100%;
+
+/*     transform: translateX(0);
+    transition: 0.5s; */
+    /* transform: scale(1); */
+}
+
+.levus-touch-slider .slide picture
+{
+    width: 100%;
+}
+
+.levus-touch-slider .slide picture img
+{
+    width: 100%;
+    height: auto;
+}
+
+.grabbing
+{
+    cursor: grabbing;
+    /* transform: scale(0.9); */
+}
+
+
+
+
+
+
+
