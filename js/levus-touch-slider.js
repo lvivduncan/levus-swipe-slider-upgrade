@@ -1,7 +1,7 @@
-// 6-08-2021 new upgrade
+// 11-08-2021
 
 
-// затримка
+// затримка (для ресайзу)
 function debounce(callback, delay) {
 
     // замикаємо змінну
@@ -27,12 +27,19 @@ window.addEventListener('resize', debounce((e) => {
 
 // TODO: клонованим додаємо клас, за яким будемо ховати на десктопі
 
+// TODO: якщо менше 3, то не клонуємо
+
 // TODO: додаємо клас "граббінґ" при натисканні
 
 
 const slider = document.querySelector('.levus-touch-slider .slides');
 // const slides = [...slider.querySelectorAll('.slide')];
-const slides = slider.querySelectorAll('.slide');
+
+// на десктопі робимо налл, на мобільному нодлист
+let slides = slider.querySelectorAll('.slide');
+
+// десктор -- скидаємо в налл
+// slides = null;
 
 // чекаємо на то, чи відбувається перетягування
 let drag = false;
@@ -43,17 +50,32 @@ let start = 0;
 // фінішна (кінець перетягування)
 let finish = 0;
 
-slides.forEach((slide,index) => {
-     
-    // заборона перетягувати картинки
-    slide.querySelector('img').addEventListener('dragstart', event => event.preventDefault());
+// слайдер тільки у тому випадку, якщо слайди не налл (тільки на мобільному)
+if(slides !== null){
 
-    slide.addEventListener('pointerdown', scrollStart);
-    slide.addEventListener('pointermove', scrollMove);
-    slide.addEventListener('pointerup', scrollEnd);
-    slide.addEventListener('pointerleave', scrollEnd);
+    // встановлюємо параметри слайдера 
+    const column = slides.length;
+    const width = column * 100;
 
-});
+    slider.style.cssText = `display: grid; 
+                            grid-template-columns: repeat(${column},1fr); 
+                            width: ${width}%; 
+                            cursor: grab; 
+                            position: relative;
+                            margin-left: -100%`;
+
+    slides.forEach(slide => {
+        
+        // заборона перетягувати картинки
+        slide.querySelector('img').addEventListener('dragstart', event => event.preventDefault());
+
+        slide.addEventListener('pointerdown', scrollStart);
+        slide.addEventListener('pointermove', scrollMove);
+        slide.addEventListener('pointerup', scrollEnd);
+        slide.addEventListener('pointerleave', scrollEnd);
+
+    });
+}
 
 function scrollStart(event){
 
@@ -71,23 +93,39 @@ function scrollMove(event){
         // місце, до якого тягнули
         finish = event.pageX;
 
-        if(finish < start){
+        if(finish - start < 0){
 
             // якщо тягнемо вліво
             this.parentNode.style.transform = `translateX(${(finish - start) - 20}px)`;
-        } else { 
+        } 
+        
+        if(finish - start > 0) { 
 
             // якщо тягнемо вправо
             this.parentNode.style.transform = `translateX(${Math.abs(start - finish) + 20}px)`;
         }
+
     }
 
-    // this.classList.add();
 }
 
 function scrollEnd(){
 
     drag = false;
+
+    // якщо тягнемо вліво (позитив) -- скролимо
+    if(finish - start > 0){
+
+        // console.log('finish - start > 5')
+
+    }
+
+    // якщо тягнемо вправо (негатив) -- скролимо
+    if(finish - start < 0){ 
+
+        // console.log('finish - start < 5')
+
+    }
 
     this.classList.remove('grabbing', drag);
 }

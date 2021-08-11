@@ -32,15 +32,8 @@
 
 .levus-touch-slider .slides
 {
-    display: grid;
-    grid-template-columns: repeat(7,1fr);
-    width: calc(7 * 100%);
-
+    display: block;
     overflow: hidden;
-    /* transform: translateX(0);
-    transition: transform 0.3s ease-out; */
-    cursor: grab;
-
     transform: translateX(0);
     transition: 0.5s;
 }
@@ -48,10 +41,6 @@
 .levus-touch-slider .slide
 {
     width: 100%;
-
-/*     transform: translateX(0);
-    transition: 0.5s; */
-    /* transform: scale(1); */
 }
 
 .levus-touch-slider .slide picture
@@ -59,21 +48,25 @@
     width: 100%;
 }
 
-.levus-touch-slider .slide picture img
+.levus-touch-slider .slide img
 {
     width: 100%;
     height: auto;
+    transform: scale(1);
+    transition: .5s;
 }
 
-.grabbing
+.levus-touch-slider .slide.grabbing
 {
     cursor: grabbing;
-    /* transform: scale(0.9); */
+    
 }
 
-
-
-
-
-
-
+/* тільки на десктопі */
+@media(min-width:776px)
+{
+    .levus-touch-slider .slide.grabbing img
+    {
+        transform: scale(0.9);
+    }
+}
