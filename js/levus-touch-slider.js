@@ -60,11 +60,11 @@ let first = null;
 if(slides !== null){
 
     // встановлюємо параметри слайдера 
-    const column = slides.length;
-    const width = column * 100;
+    const length = slides.length;
+    const width = length * 100;
 
     slider.style.cssText = `display: grid; 
-                            grid-template-columns: repeat(${column},1fr); 
+                            grid-template-columns: repeat(${length},1fr); 
                             width: ${width}%; 
                             cursor: grab; 
                             position: relative;
@@ -78,8 +78,11 @@ if(slides !== null){
         slide.addEventListener('pointerdown', scrollStart);
         slide.addEventListener('pointermove', scrollMove);
         slide.addEventListener('pointerup', scrollEnd);
-        // slide.addEventListener('pointerleave', scrollEnd);
 
+        // test
+        // slide.addEventListener('pointerleave', scrollStop);
+        slide.addEventListener('pointerleave', scrollEnd);
+        
     });
 }
 
@@ -94,6 +97,7 @@ function scrollStart(event){
 }
 
 function scrollMove(event){
+
     if(drag){
 
         // місце, до якого тягнули
@@ -103,16 +107,26 @@ function scrollMove(event){
 
             // якщо тягнемо вліво
             this.parentNode.style.transform = `translateX(${(finish - start) - 20}px)`;
+
+            last = slider.lastElementChild;
+
+            // clear
+            first = null;
         } 
         
         if(finish - start > 0) { 
 
             // якщо тягнемо вправо
             this.parentNode.style.transform = `translateX(${Math.abs(start - finish) + 20}px)`;
+
+            first = slider.firstElementChild;
+
+            // clear
+            last = null;
+
         }
 
     }
-
 }
 
 function scrollEnd(){
@@ -120,38 +134,39 @@ function scrollEnd(){
     // якщо тягнемо вправо (негатив) -- скролимо
     if(finish - start < 0){ 
 
-        last = slider.lastElementChild;
+        // last = slider.lastElementChild;
         slider.prepend(last);
 
-        slider.classList.add('scroll-left');
+        // slider.style.transform = `translateX(calc(100/${length}%))`;
 
         setTimeout(() => {
 
-            slider.classList.remove('scroll-left');
             slider.style.transform = 'translateX(0)';
-
-        }, 120);
+        }, 240);
 
     }
 
     // якщо тягнемо вліво (позитив) -- скролимо
     if(finish - start > 0){
 
-        first = slider.firstElementChild;
+        // first = slider.firstElementChild;
         slider.append(first);
 
-        slider.classList.add('scroll-right');
+        // slider.style.transform = `translateX(-100/${length}%)`;
 
         setTimeout(() => {
 
-            slider.classList.remove('scroll-right');
             slider.style.transform = 'translateX(0)';
-            
-        }, 120);
+        }, 240);
 
     }
 
     drag = false;
-
+    
     this.classList.remove('grabbing');
+}
+
+function scrollStop(){
+    
+    drag = false;
 }
