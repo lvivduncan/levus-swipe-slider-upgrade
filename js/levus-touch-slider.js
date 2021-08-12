@@ -51,13 +51,13 @@ let start = 0;
 let finish = 0;
 
 // останній елемент
-let last = null;
+let last = '';
 
 // перший елемент
-let first = null;
+let first = '';
 
 // зсув
-let shift = null;
+let shift = null; // maybe 0?
 
 // слайдер тільки у тому випадку, якщо слайди не налл (тільки на мобільному)
 if(slides !== null){
@@ -103,7 +103,7 @@ function scrollMove(event){
         // місце, до якого тягнули
         finish = event.pageX;
 
-        if(finish - start < 0){
+        if(finish - start <= 0){
 
             shift = finish - start - 20;
 
@@ -113,7 +113,7 @@ function scrollMove(event){
             last = slider.lastElementChild;
 
             // clear
-            first = null;
+            // first = null;
         } 
         
         if(finish - start > 0) { 
@@ -126,7 +126,7 @@ function scrollMove(event){
             first = slider.firstElementChild;
 
             // clear
-            last = null;
+            // last = null;
 
         }
 
@@ -136,13 +136,16 @@ function scrollMove(event){
 function scrollEnd(){
 
     // якщо тягнемо вправо (негатив) -- скролимо
-    if(finish - start < 0){ 
+    if(finish - start <= 0){ 
 
         slider.style.transform = `translateX(calc(100/${length}%))`;
+
+        console.log(slider.style.transform)
 
         setTimeout(() => {
 
             slider.style.transform = 'translateX(0)';
+            // slider.style.transform = 'translateX(-25%)';
             slider.prepend(last);
         }, 500);
         
@@ -153,9 +156,12 @@ function scrollEnd(){
 
         slider.style.transform = `translateX(-100/${length}%)`;
 
+        console.log(slider.style.transform)
+
         setTimeout( () => {
 
             slider.style.transform = 'translateX(0)';
+            // slider.style.transform = 'translateX(25%)';
             slider.append(first);
         }, 500);
         
