@@ -56,6 +56,9 @@ let last = null;
 // перший елемент
 let first = null;
 
+// зсув
+let shift = null;
+
 // слайдер тільки у тому випадку, якщо слайди не налл (тільки на мобільному)
 if(slides !== null){
 
@@ -78,9 +81,6 @@ if(slides !== null){
         slide.addEventListener('pointerdown', scrollStart);
         slide.addEventListener('pointermove', scrollMove);
         slide.addEventListener('pointerup', scrollEnd);
-
-        // test
-        // slide.addEventListener('pointerleave', scrollStop);
         slide.addEventListener('pointerleave', scrollEnd);
         
     });
@@ -105,8 +105,10 @@ function scrollMove(event){
 
         if(finish - start < 0){
 
+            shift = finish - start - 20;
+
             // якщо тягнемо вліво
-            this.parentNode.style.transform = `translateX(${(finish - start) - 20}px)`;
+            slider.style.transform = `translateX(${shift}px)`;
 
             last = slider.lastElementChild;
 
@@ -116,8 +118,10 @@ function scrollMove(event){
         
         if(finish - start > 0) { 
 
+            shift = Math.abs(start - finish) + 20;
+
             // якщо тягнемо вправо
-            this.parentNode.style.transform = `translateX(${Math.abs(start - finish) + 20}px)`;
+            slider.style.transform = `translateX(${shift}px)`;
 
             first = slider.firstElementChild;
 
@@ -134,39 +138,30 @@ function scrollEnd(){
     // якщо тягнемо вправо (негатив) -- скролимо
     if(finish - start < 0){ 
 
-        // last = slider.lastElementChild;
-        slider.prepend(last);
-
-        // slider.style.transform = `translateX(calc(100/${length}%))`;
+        slider.style.transform = `translateX(calc(100/${length}%))`;
 
         setTimeout(() => {
 
             slider.style.transform = 'translateX(0)';
-        }, 240);
-
+            slider.prepend(last);
+        }, 500);
+        
     }
 
     // якщо тягнемо вліво (позитив) -- скролимо
     if(finish - start > 0){
 
-        // first = slider.firstElementChild;
-        slider.append(first);
+        slider.style.transform = `translateX(-100/${length}%)`;
 
-        // slider.style.transform = `translateX(-100/${length}%)`;
-
-        setTimeout(() => {
+        setTimeout( () => {
 
             slider.style.transform = 'translateX(0)';
-        }, 240);
-
+            slider.append(first);
+        }, 500);
+        
     }
 
     drag = false;
     
     this.classList.remove('grabbing');
-}
-
-function scrollStop(){
-    
-    drag = false;
 }
