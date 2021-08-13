@@ -41,6 +41,7 @@
 .levus-touch-slider .slide
 {
     width: 100%;
+
 }
 
 .levus-touch-slider .slide picture
@@ -52,10 +53,11 @@
 {
     width: 100%;
     height: auto;
+    /* swipe */
     transform: scale(1);
     transition: .5s;
 }
-
+/* swipe */
 .levus-touch-slider .slide.grabbing
 {
     cursor: grabbing;
@@ -64,19 +66,9 @@
 
 /* тільки на десктопі */
 @media(min-width:776px)
-{
+{/* swipe */
     .levus-touch-slider .slide.grabbing img
     {
         transform: scale(0.99);
     }
 }
-/* 
-.scroll-left
-{
-    transform: translateX(-100%);
-}
-
-.scroll-right
-{
-    transform: translateX(100%);
-} */
