@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 
+html,
+body
+{
+    height: 100%;
+}
 
 *,::after,::before
 {
@@ -32,16 +37,20 @@
 
 .levus-touch-slider .slides
 {
-    display: block;
     overflow: hidden;
-    transform: translateX(0);
-    transition: .5s;
+    position: relative;
+    cursor: grab;
 }
 
 .levus-touch-slider .slide
 {
     width: 100%;
+    transform: translateX(0);
+    transition: .5s;
 
+    position: absolute;
+    top:0;
+    left:0;
 }
 
 .levus-touch-slider .slide picture

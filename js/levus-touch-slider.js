@@ -37,7 +37,6 @@ window.addEventListener('resize', debounce((e) => {
 
 
 const slider = document.querySelector('.levus-touch-slider .slides');
-// const slides = [...slider.querySelectorAll('.slide')];
 
 // на десктопі робимо налл, на мобільному нодлист
 let slides = slider.querySelectorAll('.slide');
@@ -54,59 +53,45 @@ let start = 0;
 // фінішна (кінець перетягування)
 let finish = 0;
 
-// останній елемент
-let last = '';
-
-// перший елемент
-let first = '';
-
-// чекаємо на зсув
+// чEкаємо на зсув
 let shift = 0;
 
-// чекаємо на створення ноди
-let createNode = false;
+// лічильник для слайдів
+let counter = 0;
 
-// встановлюємо параметри слайдера 
-const length = slides.length;
-const width = length * 100;
-
-
-// shift
-let transition = 0;
-
-// const percent = 100 / length;
+// чЕкаємо зсув
+let flag = false;
 
 // слайдер тільки у тому випадку, якщо слайди не налл (тільки на мобільному)
 if(slides !== null){
-                            
-    // slider.style.cssText = `display: grid; grid-template-columns: repeat(${length},1fr); width: ${width}%; cursor: grab; margin-left: -100%`;
 
-    slider.style.display = 'grid';
-    slider.style.gridTemplateColumns = `repeat(${length},1fr)`;
-    slider.style.width = `${width}%`;
-    slider.style.cursor = 'grab';
-    slider.style.marginLeft = '-100%';
+    // set height from max value
+    slider.style.height = `${maxHeight()}px`;
+
+    slides.forEach((slide, index) => {
+        slide.style.transform = `translateX(${index * 100}%)`;
+    });
 
     slides.forEach(slide => {
         
         // заборона перетягувати картинки
         slide.querySelector('img').addEventListener('dragstart', event => event.preventDefault());
 
-        // slide.addEventListener('pointerdown', scrollStart);
-        // slide.addEventListener('pointermove', scrollMove);
-        // slide.addEventListener('pointerup', scrollEnd);
+        slide.addEventListener('pointerdown', scrollStart);
+        slide.addEventListener('pointermove', scrollMove);
+        slide.addEventListener('pointerup', scrollEnd);
 
-        // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) slide.addEventListener('pointerleave', scrollEnd);
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) slide.addEventListener('pointerleave', scrollEnd);
 
-        // touch
-        slide.addEventListener('touchstart', scrollStart, false);
-        slide.addEventListener('touchmove', scrollMove, false);
-        slide.addEventListener('touchend', scrollEnd, false);
+        // // touch
+        // slide.addEventListener('touchstart', scrollStart, false);
+        // slide.addEventListener('touchmove', scrollMove, false);
+        // slide.addEventListener('touchend', scrollEnd, false);
 
-        // click
-        slide.addEventListener('mousedown', scrollStart, false);
-        slide.addEventListener('mousemove', scrollMove, false);
-        slide.addEventListener('mouseup', scrollEnd, false);
+        // // click
+        // slide.addEventListener('mousedown', scrollStart, false);
+        // slide.addEventListener('mousemove', scrollMove, false);
+        // slide.addEventListener('mouseup', scrollEnd, false);
 
     });
 }
@@ -131,88 +116,63 @@ function scrollMove(event){
         // якщо тягнемо вліво
         if(finish - start < 0){
 
-            shift = finish - start - 20;
+            // shift = finish - start - 20;
+            shift = finish - start;
 
-            if(createNode === false){
+            if(flag === false){
 
-                // 1 раз 
-                // last = slider.lastElementChild;
-                // slider.prepend(last);
-
-                last = slider.lastElementChild;
-                slider.prepend(last);
-
-                // shift all slides
-                slides.forEach(item => item.style.transform = `translateX(-100%)`);
-
-                createNode = true;
+                counter++;
+                flag = true;
             }
         } 
         
         // якщо тягнемо вправо
         if(finish - start > 0) { 
 
-            shift = Math.abs(start - finish) + 20;
+            // shift = Math.abs(start - finish) + 20;
+            shift = Math.abs(start - finish);
 
-            if(createNode === false){
-                
-                // 1 раз 
-                // first = slider.firstElementChild;
-                // slider.append(first);
+            if(flag === false){
 
-                last = slider.lastElementChild;
-                slider.prepend(last);
-
-                // shift all slides
-                slides.forEach(item => item.style.transform = `translateX(100%)`);
-
-                createNode = true;
+                counter--;
+                flag = true;
             }
         }
 
-        slider.style.transform = `translateX(${shift}px)`;
+        slides.forEach(slide => slide.style.transform = `translateX(${shift}px)`);
 
     }
 }
 
 function scrollEnd(){
-
-    // повертаємо статус кво
     
-    // // якщо тягнемо вліво
-    // if(finish - start < 0) {
+    // якщо тягнемо вліво
+    if(finish - start < 0) {
+        slides.forEach((slide, index) => {
+            slide.style.transform = `translateX(${index * 100 - 100}%)`;
 
-    //     // last = slider.lastElementChild;
-    //     // slider.prepend(last);
-    //     // transition -= percent;
+            // slides[index + counter].style.transform = `translateX(${})`;
+        });
+    }
 
-    // }
+    // якщо тягнемо вправо
+    if(finish - start > 0) {
+        slides.forEach((slide, index) => {
+            slide.style.transform = `translateX(${index * 100 + 100}%)`;
 
-    // // якщо тягнемо вправо
-    // if(finish - start > 0) {
-
-    //     // first = slider.firstElementChild;
-    //     // slider.append(first);
-    //     // transition += percent;
-    // }
-    
-    // slider.style.transform = `translateX(${transition}%)`;
-    
-    
-    setTimeout(() => {
-        slider.style.transform = `translateX(0)`;
-        slides.forEach(item => item.style.transform = `translateX(0)`);
-
-        // обнуляємо перевірку на створення ноди
-        createNode = false;        
-    },500);
+            // slides[index - counter].style.transform = ``;
+        });
+    }
 
     // обнуляємо перевірку на перетягування
     drag = false;
 
+    // обнуляємо перевірку на перетягування (для лічильника)
+    flag = false;
 
-    
     this.classList.remove('grabbing');
+}
 
-    console.log(transition)
+function maxHeight(){
+    return Math.max(...[...slides].map(slide => slide.clientHeight));
 }
