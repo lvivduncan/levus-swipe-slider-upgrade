@@ -92,21 +92,21 @@ if(slides !== null){
         // заборона перетягувати картинки
         slide.querySelector('img').addEventListener('dragstart', event => event.preventDefault());
 
-        slide.addEventListener('pointerdown', scrollStart);
-        slide.addEventListener('pointermove', scrollMove);
-        slide.addEventListener('pointerup', scrollEnd);
+        // slide.addEventListener('pointerdown', scrollStart);
+        // slide.addEventListener('pointermove', scrollMove);
+        // slide.addEventListener('pointerup', scrollEnd);
 
-        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) slide.addEventListener('pointerleave', scrollEnd);
+        // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) slide.addEventListener('pointerleave', scrollEnd);
 
-        // // touch
-        // slide.addEventListener('touchstart', scrollStart, false);
-        // slide.addEventListener('touchmove', scrollMove, false);
-        // slide.addEventListener('touchend', scrollEnd, false);
+        // touch
+        slide.addEventListener('touchstart', scrollStart, false);
+        slide.addEventListener('touchmove', scrollMove, false);
+        slide.addEventListener('touchend', scrollEnd, false);
 
-        // // click
-        // slide.addEventListener('mousedown', scrollStart, false);
-        // slide.addEventListener('mousemove', scrollMove, false);
-        // slide.addEventListener('mouseup', scrollEnd, false);
+        // click
+        slide.addEventListener('mousedown', scrollStart, false);
+        slide.addEventListener('mousemove', scrollMove, false);
+        slide.addEventListener('mouseup', scrollEnd, false);
 
     });
 }
@@ -136,6 +136,9 @@ function scrollMove(event){
             if(createNode === false){
 
                 // 1 раз 
+                // last = slider.lastElementChild;
+                // slider.prepend(last);
+
                 last = slider.lastElementChild;
                 slider.prepend(last);
 
@@ -154,8 +157,11 @@ function scrollMove(event){
             if(createNode === false){
                 
                 // 1 раз 
-                first = slider.firstElementChild;
-                slider.append(first);
+                // first = slider.firstElementChild;
+                // slider.append(first);
+
+                last = slider.lastElementChild;
+                slider.prepend(last);
 
                 // shift all slides
                 slides.forEach(item => item.style.transform = `translateX(100%)`);
@@ -191,15 +197,20 @@ function scrollEnd(){
     // }
     
     // slider.style.transform = `translateX(${transition}%)`;
-    slider.style.transform = `translateX(0)`;
+    
+    
+    setTimeout(() => {
+        slider.style.transform = `translateX(0)`;
+        slides.forEach(item => item.style.transform = `translateX(0)`);
 
-    slides.forEach(item => item.style.transform = `translateX(0)`);
+        // обнуляємо перевірку на створення ноди
+        createNode = false;        
+    },500);
 
     // обнуляємо перевірку на перетягування
     drag = false;
 
-    // обнуляємо перевірку на створення ноди
-    createNode = false;
+
     
     this.classList.remove('grabbing');
 
