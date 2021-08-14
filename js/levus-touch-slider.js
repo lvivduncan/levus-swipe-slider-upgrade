@@ -70,6 +70,7 @@ if(slides !== null){
 
     slides.forEach((slide, index) => {
         slide.style.transform = `translateX(${index * 100}%)`;
+        slide.style.height = `${maxHeight()}px`;
     });
 
     slides.forEach(slide => {
@@ -77,21 +78,21 @@ if(slides !== null){
         // заборона перетягувати картинки
         slide.querySelector('img').addEventListener('dragstart', event => event.preventDefault());
 
-        slide.addEventListener('pointerdown', scrollStart);
-        slide.addEventListener('pointermove', scrollMove);
-        slide.addEventListener('pointerup', scrollEnd);
+        // slide.addEventListener('pointerdown', scrollStart);
+        // slide.addEventListener('pointermove', scrollMove);
+        // slide.addEventListener('pointerup', scrollEnd);
 
-        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) slide.addEventListener('pointerleave', scrollEnd);
+        // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) slide.addEventListener('pointerleave', scrollEnd);
 
-        // // touch
-        // slide.addEventListener('touchstart', scrollStart, false);
-        // slide.addEventListener('touchmove', scrollMove, false);
-        // slide.addEventListener('touchend', scrollEnd, false);
+        // touch
+        slide.addEventListener('touchstart', scrollStart, false);
+        slide.addEventListener('touchmove', scrollMove, false);
+        slide.addEventListener('touchend', scrollEnd, false);
 
-        // // click
-        // slide.addEventListener('mousedown', scrollStart, false);
-        // slide.addEventListener('mousemove', scrollMove, false);
-        // slide.addEventListener('mouseup', scrollEnd, false);
+        // click
+        slide.addEventListener('mousedown', scrollStart, false);
+        slide.addEventListener('mousemove', scrollMove, false);
+        slide.addEventListener('mouseup', scrollEnd, false);
 
     });
 }
@@ -103,7 +104,7 @@ function scrollStart(event){
     this.classList.add('grabbing');
 
     // місце, де клікнули
-    start = event.pageX;
+    start = event.pageX || event.touches[0].clientX;
 }
 
 function scrollMove(event){
@@ -111,7 +112,7 @@ function scrollMove(event){
     if(drag){
 
         // місце, до якого тягнули
-        finish = event.pageX;
+        finish = event.pageX || event.touches[0].clientX;
 
         // якщо тягнемо вліво
         if(finish - start < 0){
@@ -173,6 +174,7 @@ function scrollEnd(){
     this.classList.remove('grabbing');
 }
 
+// max height slides
 function maxHeight(){
     return Math.max(...[...slides].map(slide => slide.clientHeight));
 }
