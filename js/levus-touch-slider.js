@@ -1,41 +1,8 @@
-// 11-08-2021
-
-// mobile devices https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
-// var touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement);
-
-// if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-
-// затримка (для ресайзу)
-function debounce(callback, delay) {
-
-    // замикаємо змінну
-    let timer;
-
-    return function(...args){
-        clearTimeout(timer);
-        timer = setTimeout( () => {
-            callback.apply(this, args);
-        }, delay);
-    }
-
-}
-
-/* 
-window.addEventListener('resize', debounce((e) => {
-    console.log('test')
-}, 120)); // default 30
- */
-
-// TODO: not clone if less then 3
-
-// TODO: resize check
+// 16-08-2021
 
 const slider = document.querySelector('.levus-touch-slider .slides');
 
 let slides = slider.querySelectorAll('.slide');
-
-// desktop
-// slides = null;
 
 // check drag
 let drag = false;
@@ -62,19 +29,94 @@ for(let i = 0; i < slides.length; i++){
 // create array shift translateX
 const translate = [];
 
+// newest nodeList
+slides = slider.querySelectorAll('.slide');
+
+// fill array items
+for(let i = 0; i < slides.length; i++){
+    translate.push(i * 100 - 200);
+}
+
+// check resize
+let resize = false;
+
+// resize ... 
+window.addEventListener('resize', () => {
+
+    if(window.innerWidth > 776){
+        if(resize === false){
+
+            for(let i = 0; i < slides.length; i++){
+                slides[i].style.opacity = '';
+                slides[i].style.transform = '';
+            }
+
+            for(let i = 0; i < slides.length; i++){
+            
+                // touch
+                slides[i].removeEventListener('touchstart', scrollStart, false);
+                slides[i].removeEventListener('touchmove', scrollMove, false);
+                slides[i].removeEventListener('touchend', scrollEnd, false);
+
+                // click
+                slides[i].removeEventListener('mousedown', scrollStart, false);
+                slides[i].removeEventListener('mousemove', scrollMove, false);
+                slides[i].removeEventListener('mouseup', scrollEnd, false);
+            }
+
+            slides = false;
+
+            resize = true;
+        }
+    } else {
+        if(resize === false){
+
+            // change height for slider
+            slider.style.height = `${maxHeight()}px`;
+
+            slides = slider.querySelectorAll('.slide');
+
+            // set height from max value
+            slider.style.height = `${maxHeight()}px`;
+
+            render();
+
+            // events
+            for(let i = 0; i < slides.length; i++){
+                slides[i].querySelector('img').addEventListener('dragstart', event => event.preventDefault());
+
+                // touch
+                slides[i].addEventListener('touchstart', scrollStart, false);
+                slides[i].addEventListener('touchmove', scrollMove, false);
+                slides[i].addEventListener('touchend', scrollEnd, false);
+
+                // click
+                slides[i].addEventListener('mousedown', scrollStart, false);
+                slides[i].addEventListener('mousemove', scrollMove, false);
+                slides[i].addEventListener('mouseup', scrollEnd, false);
+            }
+
+            resize = true;
+        }
+    }
+
+    resize = false;
+});
+
+
+if(window.innerWidth > 776){
+    slides = false;
+} else {
+    slides = slider.querySelectorAll('.slide');
+}
+
+// init();
+
 // slider if window.innerWidth < 776 (mobile)
-if(slides !== null){
+if(slides !== false){
 
     // set height from max value
     slider.style.height = `${maxHeight()}px`;
-
-    // newest nodeList
-    slides = slider.querySelectorAll('.slide');
-
-    // fill array items
-    for(let i = 0; i < slides.length; i++){
-        translate.push(i * 100 - 200);
-    }
 
     render();
 
@@ -167,7 +209,9 @@ function scrollEnd(){
 
 // max height slides
 function maxHeight(){
-    return Math.max(...[...slides].map(slide => slide.clientHeight));
+    if(slides !== false){
+        return Math.max(...[...slides].map(slide => slide.clientHeight));
+    }
 }
 
 function render(){
@@ -182,3 +226,5 @@ function render(){
         slides[i].style.transform = `translateX(${translate[i]}%)`;
     }
 }
+
+// TODO: more than one sliders! 

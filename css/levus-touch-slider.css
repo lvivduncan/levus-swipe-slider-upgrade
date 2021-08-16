@@ -35,17 +35,34 @@ body
     overflow: hidden;
 }
 
+@media(min-width:776px)
+{
+    .levus-touch-slider
+    {
+        overflow: inherit;
+    }
+}
+
 .levus-touch-slider .slides
 {
     position: relative;
     cursor: grab;
 }
 
+@media(min-width:776px)
+{
+    .levus-touch-slider .slides
+    {
+        position: static;
+        cursor: inherit
+    }    
+}
+
 .levus-touch-slider .slide
 {
     width: 100%;
     transform: translateX(0);
-    transition: 1.5s;
+    transition: .25s;
 
     position: absolute;
     top: 0;
@@ -54,10 +71,20 @@ body
     opacity: 0;
 }
 
+@media(min-width:776px)
+{
+    .levus-touch-slider .slide
+    {
+        position: static;
+        opacity: 1;
+        transition: none;
+    }
+}
+
 /* клоновані елементи */
 .levus-touch-slider .slide.clone
 {
-    /* display: none; */
+    display: none;
 }
 
 /* ховаємо на десктопі*/
