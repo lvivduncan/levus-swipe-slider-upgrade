@@ -38,51 +38,57 @@ window.addEventListener('resize', debounce((e) => {
 
 const slider = document.querySelector('.levus-touch-slider .slides');
 
-// на десктопі робимо налл, на мобільному нодлист
 let slides = slider.querySelectorAll('.slide');
 
-// десктор -- скидаємо в налл
+// desktop
 // slides = null;
 
-// чекаємо на то, чи відбувається перетягування
+// check drag
 let drag = false;
 
-// стартова позиція при перетягуванні
+// start drag pointer
 let start = 0;
 
-// фінішна (кінець перетягування)
+// finish drag pointer
 let finish = 0;
 
-// чEкаємо на зсув
+// check shift
 let shift = 0;
 
-// лічильник для слайдів
-let counter = 0;
-
-// чЕкаємо зсув
+// check shift
 let flag = false;
 
-// слайдер тільки у тому випадку, якщо слайди не налл (тільки на мобільному)
+// clone elements
+slides.forEach(slide => {
+    const clone = slide.cloneNode(true);
+    clone.classList.add('clone');
+    slider.append(clone);
+});
+
+// create array shift translateX
+const translate = [];
+
+// slider if window.innerWidth < 776 (mobile)
 if(slides !== null){
 
     // set height from max value
     slider.style.height = `${maxHeight()}px`;
 
-    slides.forEach((slide, index) => {
-        slide.style.transform = `translateX(${index * 100}%)`;
-        slide.style.height = `${maxHeight()}px`;
-    });
+    // newest nodeList
+    slides = slider.querySelectorAll('.slide');
 
+    // fill array items
+    for(let i = 0; i < slides.length; i++){
+        translate.push(i * 100 - 200);
+    }
+
+    render();
+
+    // events
     slides.forEach(slide => {
         
-        // заборона перетягувати картинки
+        // drag picture false
         slide.querySelector('img').addEventListener('dragstart', event => event.preventDefault());
-
-        // slide.addEventListener('pointerdown', scrollStart);
-        // slide.addEventListener('pointermove', scrollMove);
-        // slide.addEventListener('pointerup', scrollEnd);
-
-        // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) slide.addEventListener('pointerleave', scrollEnd);
 
         // touch
         slide.addEventListener('touchstart', scrollStart, false);
@@ -103,7 +109,7 @@ function scrollStart(event){
 
     this.classList.add('grabbing');
 
-    // місце, де клікнули
+    // where they clicked
     start = event.pageX || event.touches[0].clientX;
 }
 
@@ -111,64 +117,58 @@ function scrollMove(event){
 
     if(drag){
 
-        // місце, до якого тягнули
+        // where they dragged
         finish = event.pageX || event.touches[0].clientX;
 
-        // якщо тягнемо вліво
+        // if to left
         if(finish - start < 0){
 
-            // shift = finish - start - 20;
             shift = finish - start;
 
             if(flag === false){
 
-                counter++;
                 flag = true;
             }
         } 
         
-        // якщо тягнемо вправо
+        // if to right
         if(finish - start > 0) { 
 
-            // shift = Math.abs(start - finish) + 20;
             shift = Math.abs(start - finish);
 
             if(flag === false){
 
-                counter--;
                 flag = true;
             }
         }
 
-        slides.forEach(slide => slide.style.transform = `translateX(${shift}px)`);
+        this.style.transform = `translateX(${shift}px)`;
 
     }
 }
 
 function scrollEnd(){
-    
-    // якщо тягнемо вліво
-    if(finish - start < 0) {
-        slides.forEach((slide, index) => {
-            slide.style.transform = `translateX(${index * 100 - 100}%)`;
 
-            // slides[index + counter].style.transform = `translateX(${})`;
-        });
-    }
+    // to right
+    if(finish - start < 0){
+        
+        const first = translate.pop();
+        translate.unshift(first);
+    } 
 
-    // якщо тягнемо вправо
+    // to left
     if(finish - start > 0) {
-        slides.forEach((slide, index) => {
-            slide.style.transform = `translateX(${index * 100 + 100}%)`;
-
-            // slides[index - counter].style.transform = ``;
-        });
+        
+        const last = translate.shift();
+        translate.push(last);
     }
 
-    // обнуляємо перевірку на перетягування
+    render();
+
+    // set null
     drag = false;
 
-    // обнуляємо перевірку на перетягування (для лічильника)
+    // set null
     flag = false;
 
     this.classList.remove('grabbing');
@@ -177,4 +177,17 @@ function scrollEnd(){
 // max height slides
 function maxHeight(){
     return Math.max(...[...slides].map(slide => slide.clientHeight));
+}
+
+function render(){
+    for(let i = 0; i < slides.length; i++){
+
+        if(translate[i] === 0 || translate[i] === 100 || translate[i] === -100){
+            slides[i].style.opacity = 1;
+        } else{
+            slides[i].style.opacity = 0;
+        }
+        
+        slides[i].style.transform = `translateX(${translate[i]}%)`;
+    }
 }

@@ -37,7 +37,6 @@ body
 
 .levus-touch-slider .slides
 {
-    overflow: hidden;
     position: relative;
     cursor: grab;
 }
@@ -46,12 +45,30 @@ body
 {
     width: 100%;
     transform: translateX(0);
-    transition: .5s;
+    transition: 1.5s;
 
     position: absolute;
     top: 0;
     left: 0;
+
+    opacity: 0;
 }
+
+/* клоновані елементи */
+.levus-touch-slider .slide.clone
+{
+    /* display: none; */
+}
+
+/* ховаємо на десктопі*/
+@media(max-width:776px)
+{
+    .levus-touch-slider .slide.clone
+    {
+        display: block;
+    }   
+}
+/* клоновані елементи */
 
 .levus-touch-slider .slide picture
 {
