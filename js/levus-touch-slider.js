@@ -110,8 +110,6 @@ if(window.innerWidth > 776){
     slides = slider.querySelectorAll('.slide');
 }
 
-// init();
-
 // slider if window.innerWidth < 776 (mobile)
 if(slides !== false){
 
