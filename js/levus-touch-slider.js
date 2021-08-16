@@ -26,15 +26,9 @@ window.addEventListener('resize', debounce((e) => {
 }, 120)); // default 30
  */
 
+// TODO: not clone if less then 3
 
-// TODO: кількість елементів, враховувати поточний
-
-// TODO: клонованим додаємо клас, за яким будемо ховати на десктопі
-
-// TODO: якщо менше 3, то не клонуємо
-
-// TODO: додаємо клас "граббінґ" при натисканні
-
+// TODO: resize check
 
 const slider = document.querySelector('.levus-touch-slider .slides');
 
@@ -59,11 +53,11 @@ let shift = 0;
 let flag = false;
 
 // clone elements
-slides.forEach(slide => {
-    const clone = slide.cloneNode(true);
+for(let i = 0; i < slides.length; i++){
+    const clone = slides[i].cloneNode(true);
     clone.classList.add('clone');
     slider.append(clone);
-});
+}
 
 // create array shift translateX
 const translate = [];
@@ -85,22 +79,19 @@ if(slides !== null){
     render();
 
     // events
-    slides.forEach(slide => {
-        
-        // drag picture false
-        slide.querySelector('img').addEventListener('dragstart', event => event.preventDefault());
+    for(let i = 0; i < slides.length; i++){
+        slides[i].querySelector('img').addEventListener('dragstart', event => event.preventDefault());
 
         // touch
-        slide.addEventListener('touchstart', scrollStart, false);
-        slide.addEventListener('touchmove', scrollMove, false);
-        slide.addEventListener('touchend', scrollEnd, false);
+        slides[i].addEventListener('touchstart', scrollStart, false);
+        slides[i].addEventListener('touchmove', scrollMove, false);
+        slides[i].addEventListener('touchend', scrollEnd, false);
 
         // click
-        slide.addEventListener('mousedown', scrollStart, false);
-        slide.addEventListener('mousemove', scrollMove, false);
-        slide.addEventListener('mouseup', scrollEnd, false);
-
-    });
+        slides[i].addEventListener('mousedown', scrollStart, false);
+        slides[i].addEventListener('mousemove', scrollMove, false);
+        slides[i].addEventListener('mouseup', scrollEnd, false);
+    }
 }
 
 function scrollStart(event){
