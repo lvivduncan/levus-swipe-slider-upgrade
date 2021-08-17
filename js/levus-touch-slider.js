@@ -48,6 +48,8 @@ for(let i = 0; i<sliders.length; i++){
         if(window.innerWidth > 776){
             if(resize === false){
 
+                sliders[i].style.height = 'auto';
+
                 for(let j = 0; j < slides.length; j++){
                     slides[j].style.opacity = '';
                     slides[j].style.transform = '';
@@ -226,4 +228,4 @@ for(let i = 0; i<sliders.length; i++){
 
 }
 
-// TODO: fix bug sticking after a few swipe
+// TODO: fix bug sticking after a few swipe (desktop)
