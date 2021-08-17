@@ -71,13 +71,10 @@ window.addEventListener('resize', () => {
     } else {
         if(resize === false){
 
-            // change height for slider
+            // set height from max value
             slider.style.height = `${maxHeight()}px`;
 
             slides = slider.querySelectorAll('.slide');
-
-            // set height from max value
-            slider.style.height = `${maxHeight()}px`;
 
             render();
 
@@ -224,5 +221,3 @@ function render(){
         slides[i].style.transform = `translateX(${translate[i]}%)`;
     }
 }
-
-// TODO: more than one sliders! 
