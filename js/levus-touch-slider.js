@@ -1,4 +1,4 @@
-// 17-08-2021
+// 17-18 08-2021
 
 const sliders = document.querySelectorAll('.levus-touch-slider .slides');
 
@@ -175,7 +175,6 @@ for(let i = 0; i<sliders.length; i++){
             }
 
             this.style.transform = `translateX(${shift}px)`;
-
         }
     }
 
@@ -217,8 +216,6 @@ for(let i = 0; i<sliders.length; i++){
             }
 
             return Math.max.apply(null, height);
-            // return Math.max(...[...slides].map(slide => slide.clientHeight));
-
         }
     }
 
