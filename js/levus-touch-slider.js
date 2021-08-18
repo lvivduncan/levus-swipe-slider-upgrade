@@ -209,7 +209,16 @@ for(let i = 0; i<sliders.length; i++){
     // max height slides
     function maxHeight(){
         if(slides !== false){
-            return Math.max(...[...slides].map(slide => slide.clientHeight));
+            // tmp array
+            const height = [];
+
+            for(let i = 0; i < slides.length; i++){
+                height.push(slides[i].clientHeight);
+            }
+
+            return Math.max.apply(null, height);
+            // return Math.max(...[...slides].map(slide => slide.clientHeight));
+
         }
     }
 
