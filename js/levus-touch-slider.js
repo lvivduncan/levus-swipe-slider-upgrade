@@ -4,7 +4,10 @@ const sliders = document.querySelectorAll('.levus-touch-slider .slides');
 
 for(let i = 0; i<sliders.length; i++){
 
-    let slides = sliders[i].querySelectorAll('.slide');
+    // pseudo
+    const swipe = sliders[i];
+
+    let slides = swipe.querySelectorAll('.slide');
 
     // check drag
     let drag = false;
@@ -25,14 +28,14 @@ for(let i = 0; i<sliders.length; i++){
     for(let k = 0; k < slides.length; k++){
         const clone = slides[k].cloneNode(true);
         clone.classList.add('clone');
-        sliders[i].append(clone);
+        swipe.append(clone);
     }
 
     // create array shift translateX
     const translate = [];
 
     // newest nodeList
-    slides = sliders[i].querySelectorAll('.slide');
+    slides = swipe.querySelectorAll('.slide');
 
     // fill array items
     for(let k = 0; k < slides.length; k++){
@@ -48,24 +51,24 @@ for(let i = 0; i<sliders.length; i++){
         if(window.innerWidth > 776){
             if(resize === false){
 
-                sliders[i].style.height = 'auto';
+                swipe.style.height = 'auto';
 
-                for(let j = 0; j < slides.length; j++){
-                    slides[j].style.opacity = '';
-                    slides[j].style.transform = '';
+                for(let i = 0; i < slides.length; i++){
+                    slides[i].style.opacity = '';
+                    slides[i].style.transform = '';
                 }
 
-                for(let j = 0; j < slides.length; j++){
+                for(let i = 0; i < slides.length; i++){
                 
                     // touch
-                    slides[j].removeEventListener('touchstart', scrollStart, false);
-                    slides[j].removeEventListener('touchmove', scrollMove, false);
-                    slides[j].removeEventListener('touchend', scrollEnd, false);
+                    slides[i].removeEventListener('touchstart', scrollStart, false);
+                    slides[i].removeEventListener('touchmove', scrollMove, false);
+                    slides[i].removeEventListener('touchend', scrollEnd, false);
 
                     // click
-                    slides[j].removeEventListener('mousedown', scrollStart, false);
-                    slides[j].removeEventListener('mousemove', scrollMove, false);
-                    slides[j].removeEventListener('mouseup', scrollEnd, false);
+                    slides[i].removeEventListener('mousedown', scrollStart, false);
+                    slides[i].removeEventListener('mousemove', scrollMove, false);
+                    slides[i].removeEventListener('mouseup', scrollEnd, false);
                 }
 
                 slides = false;
@@ -76,26 +79,13 @@ for(let i = 0; i<sliders.length; i++){
             if(resize === false){
 
                 // set height from max value
-                sliders[i].style.height = `${maxHeight()}px`;
+                swipe.style.height = `${maxHeight()}px`;
 
-                slides = sliders[i].querySelectorAll('.slide');
+                slides = swipe.querySelectorAll('.slide');
 
                 render();
 
-                // events
-                for(let j = 0; j < slides.length; j++){
-                    slides[j].querySelector('img').addEventListener('dragstart', event => event.preventDefault());
-
-                    // touch
-                    slides[j].addEventListener('touchstart', scrollStart, false);
-                    slides[j].addEventListener('touchmove', scrollMove, false);
-                    slides[j].addEventListener('touchend', scrollEnd, false);
-
-                    // click
-                    slides[j].addEventListener('mousedown', scrollStart, false);
-                    slides[j].addEventListener('mousemove', scrollMove, false);
-                    slides[j].addEventListener('mouseup', scrollEnd, false);
-                }
+                events();
 
                 resize = true;
             }
@@ -106,33 +96,24 @@ for(let i = 0; i<sliders.length; i++){
 
 
     if(window.innerWidth > 776){
+
+        // set null for disable slider
         slides = false;
     } else {
-        slides = sliders[i].querySelectorAll('.slide');
+
+        // get nodeList
+        slides = swipe.querySelectorAll('.slide');
     }
 
     // slider if window.innerWidth < 776 (mobile)
     if(slides !== false){
 
         // set height from max value
-        sliders[i].style.height = `${maxHeight()}px`;
+        swipe.style.height = `${maxHeight()}px`;
 
         render();
 
-        // events
-        for(let j = 0; j < slides.length; j++){
-            slides[j].querySelector('img').addEventListener('dragstart', event => event.preventDefault());
-
-            // touch
-            slides[j].addEventListener('touchstart', scrollStart, false);
-            slides[j].addEventListener('touchmove', scrollMove, false);
-            slides[j].addEventListener('touchend', scrollEnd, false);
-
-            // click
-            slides[j].addEventListener('mousedown', scrollStart, false);
-            slides[j].addEventListener('mousemove', scrollMove, false);
-            slides[j].addEventListener('mouseup', scrollEnd, false);
-        }
+        events();
     }
 
     function scrollStart(event){
@@ -230,6 +211,22 @@ for(let i = 0; i<sliders.length; i++){
             
             slides[i].style.transform = `translateX(${translate[i]}%)`;
         }
-    }    
+    }
+
+    function events(){
+        for(let i = 0; i < slides.length; i++){
+            slides[i].querySelector('img').addEventListener('dragstart', event => event.preventDefault());
+
+            // touch
+            slides[i].addEventListener('touchstart', scrollStart, false);
+            slides[i].addEventListener('touchmove', scrollMove, false);
+            slides[i].addEventListener('touchend', scrollEnd, false);
+
+            // click
+            slides[i].addEventListener('mousedown', scrollStart, false);
+            slides[i].addEventListener('mousemove', scrollMove, false);
+            slides[i].addEventListener('mouseup', scrollEnd, false);
+        }
+    }
 
 }
