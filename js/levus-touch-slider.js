@@ -1,4 +1,4 @@
-// 17-18 08-2021
+// 17-19 08-2021
 
 const sliders = document.querySelectorAll('.levus-touch-slider .slides');
 
@@ -45,7 +45,7 @@ for(let i = 0; i<sliders.length; i++){
     // check resize
     let resize = false;
 
-    // resize ... 
+    // if resize
     window.addEventListener('resize', () => {
 
         if(window.innerWidth > 776){
