@@ -222,7 +222,7 @@ for(let i = 0; i<sliders.length; i++){
     function render(){
         for(let i = 0; i < slides.length; i++){
 
-            if(translate[i] === 0 || translate[i] === 100 || translate[i] === -100){
+            if(translate[i] === 0){
                 slides[i].style.opacity = 1;
             } else{
                 slides[i].style.opacity = 0;
@@ -233,5 +233,3 @@ for(let i = 0; i<sliders.length; i++){
     }    
 
 }
-
-// TODO: fix bug sticking after a few swipe (desktop)
