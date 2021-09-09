@@ -59,7 +59,7 @@ for(let i = 0; i<sliders.length; i++){
                 }
 
                 for(let i = 0; i < slides.length; i++){
-                
+/* 
                     // touch
                     slides[i].removeEventListener('touchstart', scrollStart, false);
                     slides[i].removeEventListener('touchmove', scrollMove, false);
@@ -69,6 +69,12 @@ for(let i = 0; i<sliders.length; i++){
                     slides[i].removeEventListener('mousedown', scrollStart, false);
                     slides[i].removeEventListener('mousemove', scrollMove, false);
                     slides[i].removeEventListener('mouseup', scrollEnd, false);
+ */
+
+                    slides[i].addEventListener('pointerdown', scrollStart);
+                    slides[i].addEventListener('pointermove', scrollMove);
+                    slides[i].addEventListener('pointerup', scrollEnd);
+                    slides[i].addEventListener('pointercancel', scrollEnd);
                 }
 
                 slides = false;
@@ -123,7 +129,8 @@ for(let i = 0; i<sliders.length; i++){
         this.classList.add('grabbing');
 
         // where they clicked
-        start = event.pageX || event.touches[0].clientX;
+        // start = event.pageX || event.touches[0].clientX;
+        start = event.pageX;
     }
 
     function scrollMove(event){
@@ -131,7 +138,8 @@ for(let i = 0; i<sliders.length; i++){
         if(drag){
 
             // where they dragged
-            finish = event.pageX || event.touches[0].clientX;
+            // finish = event.pageX || event.touches[0].clientX;
+            finish = event.pageX;
 
             // if to left
             if(finish - start < 0){
@@ -216,7 +224,7 @@ for(let i = 0; i<sliders.length; i++){
     function events(){
         for(let i = 0; i < slides.length; i++){
             slides[i].querySelector('img').addEventListener('dragstart', event => event.preventDefault());
-
+/* 
             // touch
             slides[i].addEventListener('touchstart', scrollStart, false);
             slides[i].addEventListener('touchmove', scrollMove, false);
@@ -226,6 +234,13 @@ for(let i = 0; i<sliders.length; i++){
             slides[i].addEventListener('mousedown', scrollStart, false);
             slides[i].addEventListener('mousemove', scrollMove, false);
             slides[i].addEventListener('mouseup', scrollEnd, false);
+ */
+
+
+            slides[i].addEventListener('pointerdown', scrollStart);
+            slides[i].addEventListener('pointermove', scrollMove);
+            slides[i].addEventListener('pointerup', scrollEnd);
+            slides[i].addEventListener('pointercancel', scrollEnd);
         }
     }
 
