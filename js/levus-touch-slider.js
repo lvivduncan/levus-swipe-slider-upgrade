@@ -53,28 +53,20 @@ for(let i = 0; i<sliders.length; i++){
 
                 swipe.style.height = 'auto';
 
+                const slide = slides[i];
+
                 for(let i = 0; i < slides.length; i++){
-                    slides[i].style.opacity = '';
-                    slides[i].style.transform = '';
+                    slide.style.opacity = '';
+                    slide.style.transform = '';
                 }
 
                 for(let i = 0; i < slides.length; i++){
-/* 
-                    // touch
-                    slides[i].removeEventListener('touchstart', scrollStart, false);
-                    slides[i].removeEventListener('touchmove', scrollMove, false);
-                    slides[i].removeEventListener('touchend', scrollEnd, false);
 
-                    // click
-                    slides[i].removeEventListener('mousedown', scrollStart, false);
-                    slides[i].removeEventListener('mousemove', scrollMove, false);
-                    slides[i].removeEventListener('mouseup', scrollEnd, false);
- */
-
-                    slides[i].addEventListener('pointerdown', scrollStart);
-                    slides[i].addEventListener('pointermove', scrollMove);
-                    slides[i].addEventListener('pointerup', scrollEnd);
-                    slides[i].addEventListener('pointercancel', scrollEnd);
+                    slide.addEventListener('pointerdown', scrollStart);
+                    slide.addEventListener('pointermove', scrollMove);
+                    slide.addEventListener('pointerup', scrollEnd);
+                    slide.addEventListener('pointercancel', scrollEnd);
+                    slide.addEventListener('pointerleave', scrollEnd);
                 }
 
                 slides = false;
@@ -169,29 +161,32 @@ for(let i = 0; i<sliders.length; i++){
 
     function scrollEnd(){
 
-        // to right
-        if(finish - start < 0){
-            
-            const first = translate.pop();
-            translate.unshift(first);
-        } 
+        if(drag){
 
-        // to left
-        if(finish - start > 0) {
-            
-            const last = translate.shift();
-            translate.push(last);
+            // to right
+            if(finish - start < 0){
+                
+                const first = translate.pop();
+                translate.unshift(first);
+            } 
+
+            // to left
+            if(finish - start > 0) {
+                
+                const last = translate.shift();
+                translate.push(last);
+            }
+
+            render();
+
+            // set null
+            drag = false;
+
+            // set null
+            flag = false;
+
+            this.classList.remove('grabbing');            
         }
-
-        render();
-
-        // set null
-        drag = false;
-
-        // set null
-        flag = false;
-
-        this.classList.remove('grabbing');
     }
 
     // max height slides
@@ -224,24 +219,15 @@ for(let i = 0; i<sliders.length; i++){
     function events(){
         for(let i = 0; i < slides.length; i++){
             slides[i].querySelector('img').addEventListener('dragstart', event => event.preventDefault());
-/* 
-            // touch
-            slides[i].addEventListener('touchstart', scrollStart, false);
-            slides[i].addEventListener('touchmove', scrollMove, false);
-            slides[i].addEventListener('touchend', scrollEnd, false);
-
-            // click
-            slides[i].addEventListener('mousedown', scrollStart, false);
-            slides[i].addEventListener('mousemove', scrollMove, false);
-            slides[i].addEventListener('mouseup', scrollEnd, false);
- */
-
 
             slides[i].addEventListener('pointerdown', scrollStart);
             slides[i].addEventListener('pointermove', scrollMove);
             slides[i].addEventListener('pointerup', scrollEnd);
             slides[i].addEventListener('pointercancel', scrollEnd);
+            slides[i].addEventListener('pointerleave', scrollEnd);
         }
     }
 
 }
+
+// TODO: check resize -- bug scroll after > 776px
